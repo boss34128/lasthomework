@@ -1,93 +1,293 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
+  <div>
+    <h2>จองห้องพักโรงแรม</h2>
+    <v-card class="mx-auto pa-6" color="#26da94" max-width="900" elevation="15">
+      <h3>รายละเอียดลูกค้า</h3>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-row>
+          <v-col cols="7">
+            <v-text-field
+              v-model="name"
+              :rules="nameRules"
+              label="ชื่อ-นามสกุล"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="5">
+            <v-text-field
+              v-model="phone"
+              :rules="nameRules"
+              label="เบอร์โทร"
+              prepend-icon="mdi-cellphone"
+              required
             >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
+              icon="mdi-cellphone"
+            </v-text-field>
+          </v-col>
+        </v-row>
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          prepend-icon="mdi-email"
+          required
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <v-text-field
+              v-model="add"
+              :rules="nameRules"
+              name="input-7-1"
+              label="ที่อยู่"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              v-model="sub_district"
+              :rules="nameRules"
+              name="input-7-1"
+              label="ตำบล/แขวง"
+              required
+            ></v-text-field> </v-col
+        ></v-row>
+        <v-row
+          ><v-col cols="6">
+            <v-text-field
+              v-model="district"
+              :rules="nameRules"
+              name="input-7-1"
+              label="อำเภอ/เขต"
+              required
+            ></v-text-field
+          ></v-col>
+          <v-col cols="6">
+            <v-text-field
+              v-model="province"
+              :rules="nameRules"
+              name="input-7-1"
+              label="จังหวัด"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-divider></v-divider>
+        <h3>รายละเอียดการจอง</h3>
+        <v-row>
+          <v-col cols="6" sm="6">
+            <v-menu
+              ref="menu"
+              v-model="menu2"
+              :rules="nameRules"
+              :dateout-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="datein"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
             >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="datein"
+                  :rules="nameRules"
+                  label="วันที่"
+                  prepend-icon="mdi-table-large"
+                  readonly
+                  required
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-if="menu2"
+                v-model="datein"
+                full-width
+                @click:date="$refs.menu.save(datein)"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col cols="6" sm="6">
+            <v-menu
+              ref="menu1"
+              v-model="menu1"
+              :dateout-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="dateout"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
             >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateout"
+                  :rules="nameRules"
+                  label="ถึงวันที่"
+                  prepend-icon="mdi-table-large"
+                  readonly
+                  required
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-if="menu1"
+                v-model="dateout"
+                full-width
+                @click:date="$refs.menu1.save(dateout)"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-select
+              v-model="room"
+              :rules="nameRules"
+              :items="items"
+              prepend-icon="mdi-home-outline"
+              label="จำนวนห้อง"
+              required
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="costumers"
+              :rules="nameRules"
+              :items="kon"
+              prepend-icon="mdi-home-outline"
+              label="จำนวนคน"
+              required
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+        <v-row>
+          <v-col cols="10"> </v-col>
+          <v-col cols="2">
+            <div class="text-center">
+              <v-dialog v-model="dialog" width="800">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    depressed
+                    color="primary"
+                    :disabled="!valid"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="validate"
+                  >
+                    SUMMIT
+                  </v-btn>
+                </template>
+
+                <v-card class="pa-4" elevation="11">
+                  <v-row>
+                    <v-col cols="12"> ยืนยันข้อมูล </v-col>
+                  </v-row>
+
+                  <v-divider></v-divider>
+                  <v-card-text
+                    ><h4>
+                      ชื่อ: {{ name }} <br />
+                      เบอร์โทร: {{ phone }} <br />
+                      E-mail: {{ email }} <br />
+                      ที่อยู่: {{ add }} ตำบล {{ sub_district }} อำเภอ
+                      {{ district }} จังหวัด {{ province }} <br />
+                      ตั้งแต่วันที่ {{ datein }} ถึงวันที่ {{ dateout }}<br />
+                      จำนวน {{ costumers }} คน {{ room }} ห้อง
+                    </h4></v-card-text
+                  >
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialog = false">
+                      แก้ไข
+                    </v-btn>
+                    <v-btn
+                      color="primary"
+                      text
+                      @click=";(dialog = false), set(), reset()"
+                    >
+                      ตกลง
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </v-col>
+        </v-row>
+      </v-form>
+    </v-card>
+  </div>
 </template>
-
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
+import { db } from '~/plugins/firebaseConfig.js'
 export default {
-  components: {
-    Logo,
-    VuetifyLogo,
+  data() {
+    return {
+      name: null,
+      phone: '',
+      add: '',
+      Address: {},
+      email: '',
+      costumers: '',
+      kon: [1, 2],
+      room: '',
+      items: [1, 2, 3, 4, 5, 6],
+      arr: {},
+      datein: '',
+      dateout: '',
+      menu1: false,
+      menu2: false,
+      sub_district: '',
+      district: '',
+      // state: 'checkin',
+      province: '',
+      dialog: false,
+      nameRules: [(v) => !!v || 'please required'],
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+      ],
+      valid: true,
+    }
+  },
+  methods: {
+    validate() {
+      this.$refs.form.validate()
+    },
+    set() {
+      const d = {
+        room: this.room,
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        costumers: this.costumers,
+        address: {
+          add: this.add,
+          sub_district: this.sub_district,
+          district: this.district,
+          province: this.province,
+        },
+        date_in: this.datein,
+        date_out: this.dateout,
+      }
+      db.collection('MyForm')
+        .doc()
+        .set(d)
+        .then(function () {
+          console.log('Document successfully written! -> data')
+        })
+    },
+    reset() {
+      this.$refs.form.reset()
+    },
   },
 }
 </script>
